@@ -482,6 +482,12 @@ struct {
     {"\x4C\x8D\x05\x00\x00\x00\x00\xEB\x16\x48\x8D\x0D\x00\x00\x00\x00\xE8\x00\x00\x00\x00", 22}, //GName
     {"\x48\x8D\x1D\x00\x00\x00\x00\x8B\x05\x00\x00\x00\x00\x39\x45\x88\x7C\x20\x48\x8D\x45\x88\x48\x89\x85\x90\x05\x00\x00", 30}, //Gobject 
     nullptr
+  },
+  {//PAYDAY3Client.exe
+    &Core,
+    {"\x4C\x8D\x05\x00\x00\x00\x00\xEB\x16\x48\x8D\x0D\x00\x00\x00\x00\xE8\x00\x00\x00\x00", 22}, //GName
+    {"\x48\x8B\x05\x00\x00\x00\x00\x48\x8B\x0C\xC8\x4C\x8D\x04\xD1\xEB\x00", 17 }, //Gobject 
+      nullptr
   }
 };
 
@@ -506,6 +512,7 @@ std::unordered_map<std::string, decltype(&engines[0])> games = {
   {"ProjectBoundarySteam-Win64-Shipping",&engines[0]},
   {"Prospect-Win64-Shipping",&engines[0]},
   {"SquadGame", &engines[13]},
+  {"PAYDAY3Client-Win64-Shipping", &engines[14]},
 };
 
 STATUS EngineInit(std::string game, void* image) {

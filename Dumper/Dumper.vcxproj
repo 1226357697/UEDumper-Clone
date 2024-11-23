@@ -110,6 +110,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\include\fmt\format.cc" />
     <ClCompile Include="dumper.cpp" />
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="generic.cpp" />
@@ -119,6 +120,9 @@
     <ClCompile Include="wrappers.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\fmt\core.h" />
+    <ClInclude Include="..\include\fmt\format-inl.h" />
+    <ClInclude Include="..\include\fmt\format.h" />
     <ClInclude Include="defs.h" />
     <ClInclude Include="dumper.h" />
     <ClInclude Include="engine.h" />
