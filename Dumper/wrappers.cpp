@@ -603,8 +603,14 @@ UE_UProperty UE_UMapProperty::GetValueProp() const {
 }
 
 std::string UE_UMapProperty::GetTypeStr() const {
+
+#if USE_UE_DUMPER
   return fmt::format("struct TMap<{}, {}>", GetKeyProp().GetType().second, GetValueProp().GetType().second);
+#else
+  return "";
+#endif
 }
+
 
 UE_UClass UE_UMapProperty::StaticClass() {
   static auto obj = (UE_UClass)(ObjObjects.FindObject("Class CoreUObject.MapProperty"));
@@ -706,137 +712,256 @@ type UE_FProperty::GetType() const {
   auto hash = Hash(str.c_str(), str.size());
   switch (hash) {
   case HASH("StructProperty"): {
+
     auto obj = this->Cast<UE_FStructProperty>();
+#if USE_UE_DUMPER
     type = { PropertyType::StructProperty, obj.GetTypeStr() };
+#else
+    type = { PropertyType::StructProperty, ""};
+#endif
     break;
   }
   case HASH("ObjectProperty"): {
     auto obj = this->Cast<UE_FObjectPropertyBase>();
+#if USE_UE_DUMPER
     type = { PropertyType::ObjectProperty, obj.GetTypeStr() };
+#else
+    type = { PropertyType::ObjectProperty, ""};
+#endif
     break;
   }
   case HASH("SoftObjectProperty"): {
     auto obj = this->Cast<UE_FObjectPropertyBase>();
+#if USE_UE_DUMPER
     type = { PropertyType::SoftObjectProperty, "struct TSoftObjectPtr<" + obj.GetPropertyClass().GetCppName() + ">" };
+#else
+    type = { PropertyType::SoftObjectProperty, "" };
+#endif
     break;
   }
   case HASH("FloatProperty"): {
+#if USE_UE_DUMPER
     type = { PropertyType::FloatProperty, "float" };
+#else
+    type = { PropertyType::FloatProperty, "" };
+#endif
     break;
   }
   case HASH("ByteProperty"): {
     auto obj = this->Cast<UE_FByteProperty>();
+#if USE_UE_DUMPER
     type = { PropertyType::ByteProperty, obj.GetTypeStr() };
+#else
+    type = { PropertyType::ByteProperty, "" };
+#endif
     break;
   }
   case HASH("BoolProperty"): {
     auto obj = this->Cast<UE_FBoolProperty>();
+#if USE_UE_DUMPER
     type = { PropertyType::BoolProperty, obj.GetTypeStr() };
+#else
+    type = { PropertyType::BoolProperty, "" };
+#endif
     break;
   }
   case HASH("IntProperty"): {
+#if USE_UE_DUMPER
     type = { PropertyType::IntProperty, "int32_t" };
+#else
+    type = { PropertyType::IntProperty, "" };
+#endif
     break;
   }
   case HASH("Int8Property"): {
+#if USE_UE_DUMPER
     type = { PropertyType::Int8Property, "int8_t" };
+#else
+    type = { PropertyType::Int8Property, "" };
+#endif
     break;
   }
   case HASH("Int16Property"): {
+#if USE_UE_DUMPER
     type = { PropertyType::Int16Property, "int16_t" };
+#else
+    type = { PropertyType::Int16Property, "" };
+#endif
     break;
   }
   case HASH("Int64Property"): {
+#if USE_UE_DUMPER
     type = { PropertyType::Int64Property, "int64_t" };
+#else
+    type = { PropertyType::Int64Property, "" };
+#endif
     break;
   }
   case HASH("UInt16Property"): {
+#if USE_UE_DUMPER
     type = { PropertyType::UInt16Property, "uint16_t" };
+#else
+    type = { PropertyType::UInt16Property, "" };
+#endif
     break;
   }
   case HASH("UInt32Property"): {
+#if USE_UE_DUMPER
     type = { PropertyType::UInt32Property, "uint32_t" };
+#else
+    type = { PropertyType::UInt32Property, "" };
+#endif
     break;
   }
   case HASH("UInt64Property"): {
+#if USE_UE_DUMPER
     type = { PropertyType::UInt64Property, "uint64_t" };
+#else
+    type = { PropertyType::UInt64Property, "" };
+#endif
     break;
   }
   case HASH("NameProperty"): {
+#if USE_UE_DUMPER
     type = { PropertyType::NameProperty, "struct FName" };
+#else
+    type = { PropertyType::NameProperty, "" };
+#endif
     break;
   }
   case HASH("DelegateProperty"): {
+#if USE_UE_DUMPER
     type = { PropertyType::DelegateProperty, "struct FDelegate" };
+#else
+    type = { PropertyType::DelegateProperty, "" };
+#endif
     break;
   }
   case HASH("SetProperty"): {
     auto obj = this->Cast<UE_FSetProperty>();
+#if USE_UE_DUMPER
     type = { PropertyType::SetProperty, obj.GetTypeStr() };
+#else
+    type = { PropertyType::SetProperty, "" };
+#endif
     break;
   }
   case HASH("ArrayProperty"): {
     auto obj = this->Cast<UE_FArrayProperty>();
+#if USE_UE_DUMPER
     type = { PropertyType::ArrayProperty, obj.GetTypeStr() };
+#else
+    type = { PropertyType::ArrayProperty, "" };
+#endif
     break;
   }
   case HASH("WeakObjectProperty"): {
     auto obj = this->Cast<UE_FStructProperty>();
+#if USE_UE_DUMPER
     type = { PropertyType::WeakObjectProperty, "struct TWeakObjectPtr<" + obj.GetTypeStr() + ">" };
-
+#else
+    type = { PropertyType::WeakObjectProperty, "" };
+#endif
     break;
   }
   case HASH("StrProperty"): {
+#if USE_UE_DUMPER
     type = { PropertyType::StrProperty, "struct FString" };
+#else
+    type = { PropertyType::StrProperty, "" };
+#endif
     break;
   }
   case HASH("TextProperty"): {
+#if USE_UE_DUMPER
     type = { PropertyType::TextProperty, "struct FText" };
+#else
+    type = { PropertyType::TextProperty, "" };
+#endif
     break;
   }
   case HASH("MulticastSparseDelegateProperty"): {
+#if USE_UE_DUMPER
     type = { PropertyType::MulticastSparseDelegateProperty, "struct FMulticastSparseDelegate" };
+#else
+    type = { PropertyType::MulticastSparseDelegateProperty, "" };
+#endif
     break;
   }
   case HASH("EnumProperty"): {
     auto obj = this->Cast<UE_FEnumProperty>();
+#if USE_UE_DUMPER
     type = { PropertyType::EnumProperty, obj.GetTypeStr() };
+#else
+    type = { PropertyType::EnumProperty, "" };
+#endif
     break;
   }
   case HASH("DoubleProperty"): {
+#if USE_UE_DUMPER
     type = { PropertyType::DoubleProperty, "double" };
+#else
+    type = { PropertyType::DoubleProperty, "" };
+#endif
     break;
   }
   case HASH("MulticastDelegateProperty"): {
+#if USE_UE_DUMPER
     type = { PropertyType::MulticastDelegateProperty, "FMulticastDelegate" };
+#else
+#endif
     break;
   }
   case HASH("ClassProperty"): {
     auto obj = this->Cast<UE_FClassProperty>();
+#if USE_UE_DUMPER
     type = { PropertyType::ClassProperty, obj.GetTypeStr() };
+#else
+    type = { PropertyType::ClassProperty, "" };
+#endif
     break;
   }
   case HASH("MulticastInlineDelegateProperty"): {
+#if USE_UE_DUMPER
     type = { PropertyType::MulticastDelegateProperty, "struct FMulticastInlineDelegate" };
+#else
+    type = { PropertyType::MulticastDelegateProperty, "" };
+#endif
     break;
   }
   case HASH("MapProperty"): {
     auto obj = this->Cast<UE_FMapProperty>();
+#if USE_UE_DUMPER
     type = { PropertyType::MapProperty, obj.GetTypeStr() };
+#else
+    type = { PropertyType::MapProperty, "" };
+#endif
     break;
   }
   case HASH("InterfaceProperty"): {
     auto obj = this->Cast<UE_FInterfaceProperty>();
+#if USE_UE_DUMPER
     type = { PropertyType::InterfaceProperty, obj.GetTypeStr() };
+#else
+    type = { PropertyType::InterfaceProperty, "" };
+#endif
     break;
   }
   case HASH("FieldPathProperty"): {
     auto obj = this->Cast<UE_FFieldPathProperty>();
+#if USE_UE_DUMPER
     type = { PropertyType::FieldPathProperty, obj.GetTypeStr() };
+#else
+    type = { PropertyType::FieldPathProperty, "" };
+#endif
     break;
   }
   case HASH("SoftClassProperty"): {
+#if USE_UE_DUMPER
     type = { PropertyType::SoftClassProperty, "struct TSoftClassPtr<UObject>" };
+#else
+    type = { PropertyType::SoftClassProperty, "" };
+#endif
     break;
   }
   }
@@ -924,7 +1049,12 @@ UE_FProperty UE_FMapProperty::GetValueProp() const {
 }
 
 std::string UE_FMapProperty::GetTypeStr() const {
+
+#if USE_UE_DUMPER
   return fmt::format("struct TMap<{}, {}>", GetKeyProp().GetType().second, GetValueProp().GetType().second);
+#else
+  return "";
+#endif
 }
 
 UE_UClass UE_FInterfaceProperty::GetInterfaceClass() const {
@@ -943,10 +1073,15 @@ std::string UE_FFieldPathProperty::GetTypeStr() const {
   return "struct TFieldPath<F" + GetPropertyName().GetName() + ">";
 }
 
+
 void UE_UPackage::GenerateBitPadding(std::vector<Member>& members, uint32 offset, uint8 bitOffset, uint8 size) {
   Member padding;
+#if USE_UE_DUMPER
   padding.Type = "char";
   padding.Name = fmt::format("pad_{:0X}_{} : {}", offset, bitOffset, size);
+#else
+  padding.Name = "pad";
+#endif
   padding.Offset = offset;
   padding.Size = 1;
   members.push_back(padding);
@@ -954,8 +1089,13 @@ void UE_UPackage::GenerateBitPadding(std::vector<Member>& members, uint32 offset
 
 void UE_UPackage::GeneratePadding(std::vector<Member>& members, uint32 offset, uint32 size) {
   Member padding;
+#if USE_UE_DUMPER
   padding.Type = "char";
   padding.Name = fmt::format("pad_{:0X}[{:#0x}]", offset, size);
+#else
+  padding.Name = "pad";
+#endif
+
   padding.Offset = offset;
   padding.Size = size;
   members.push_back(padding);
@@ -1037,12 +1177,18 @@ void UE_UPackage::FillPadding(UE_UStruct object, std::vector<Member>& members, u
         m.Size = 8;
 
         if (ptrObject.IsA<UE_UObject>()) {
+#if USE_UE_DUMPER
           m.Type = "struct " + ptrObject.GetClass().GetCppName() + "*";
+#endif
           m.Name = ptrObject.GetName();
         }
         else {
+#if USE_UE_DUMPER
           m.Type = "void*";
           m.Name = fmt::format("ptr_{:x}", ptr);
+#else
+          m.Name = "ptr_";
+#endif
         }
 
 
@@ -1063,14 +1209,17 @@ void UE_UPackage::FillPadding(UE_UStruct object, std::vector<Member>& members, u
 }
 
 void UE_UPackage::GenerateFunction(UE_UFunction fn, Function *out) {
+
+  out->Func = fn.GetFunc();
+#if USE_UE_DUMPER
   out->FullName = fn.GetFullName();
   out->Flags = fn.GetFunctionFlags();
-  out->Func = fn.GetFunc();
 
   auto generateParam = [&](IProperty *prop) {
     auto flags = prop->GetPropertyFlags();
     // if property has 'ReturnParm' flag
     if (flags & 0x400) {
+
       out->CppName = prop->GetType().second + " " + fn.GetName();
     }
     // if property has 'Parm' flag
@@ -1104,6 +1253,9 @@ void UE_UPackage::GenerateFunction(UE_UFunction fn, Function *out) {
   if (out->CppName.size() == 0) {
     out->CppName = "void " + fn.GetName();
   }
+#else
+  out->CppName = fn.GetName();
+#endif
 }
 
 void UE_UPackage::GenerateStruct(UE_UStruct object, std::vector<Struct>& arr, bool findPointers) {
@@ -1113,15 +1265,28 @@ void UE_UPackage::GenerateStruct(UE_UStruct object, std::vector<Struct>& arr, bo
     return;
   }
   s.Inherited = 0;
+#if USE_UE_DUMPER
   s.FullName = object.GetFullName();
   s.CppName = "struct " + object.GetCppName();
+#else
+  s.CppName = object.GetCppName();
+#endif
 
   auto super = object.GetSuper();
   if (super) {
+#if USE_UE_DUMPER
     s.CppName += " : " + super.GetCppName();
+#endif
     s.Inherited = super.GetSize();
   }
 
+#if !USE_UE_DUMPER
+  for(auto super = object.GetSuper(); super; super = super.GetSuper())
+  {
+    GenerateStruct(super, s.supers, findPointers);
+  }
+
+#endif
   uint32 offset = s.Inherited;
   uint8 bitOffset = 0;
 
@@ -1133,7 +1298,11 @@ void UE_UPackage::GenerateStruct(UE_UStruct object, std::vector<Struct>& arr, bo
     } // this shouldn't be zero
 
     auto type = prop->GetType();
+
+#if USE_UE_DUMPER
     m->Type = type.second;
+#endif
+
     m->Name = prop->GetName();
     m->Offset = prop->GetOffset();
 
@@ -1156,7 +1325,9 @@ void UE_UPackage::GenerateStruct(UE_UStruct object, std::vector<Struct>& arr, bo
         UE_UPackage::GenerateBitPadding(s.Members, offset, bitOffset, zeros - bitOffset);
         bitOffset = zeros;
       }
+#if USE_UE_DUMPER
       m->Name += fmt::format(" : {}", ones);
+#endif
       bitOffset += ones;
 
       if (bitOffset == 8) {
@@ -1166,7 +1337,9 @@ void UE_UPackage::GenerateStruct(UE_UStruct object, std::vector<Struct>& arr, bo
 
     } else {
       if (arrDim > 1) {
+#if USE_UE_DUMPER
         m->Name += fmt::format("[{:#0x}]", arrDim);
+#endif
       }
 
       offset += m->Size;
@@ -1202,6 +1375,7 @@ void UE_UPackage::GenerateStruct(UE_UStruct object, std::vector<Struct>& arr, bo
   arr.push_back(s);
 }
 
+#if USE_UE_DUMPER
 void UE_UPackage::GenerateEnum(UE_UEnum object, std::vector<Enum> &arr) {
   Enum e;
   e.FullName = object.GetFullName();
@@ -1245,6 +1419,9 @@ void UE_UPackage::GenerateEnum(UE_UEnum object, std::vector<Enum> &arr) {
     arr.push_back(e);
   }
 }
+#endif
+
+#if USE_UE_DUMPER
 
 void UE_UPackage::SaveStruct(std::vector<Struct> &arr, FILE *file) {
   for (auto &s : arr) {
@@ -1295,20 +1472,31 @@ void UE_UPackage::SaveEnum(std::vector<Enum> &arr, FILE *file) {
     fmt::print(file, "\n}};\n\n");
   }
 }
+#endif
 
 void UE_UPackage::Process() {
   auto &objects = Package->second;
-  for (auto &object : objects) {
-    if (object.IsA<UE_UClass>()) {
+  for (auto &object : objects) 
+  {
+    if (object.IsA<UE_UClass>()) 
+    {
       GenerateStruct(object.Cast<UE_UStruct>(), Classes, FindPointers);
-    } else if (object.IsA<UE_UScriptStruct>()) {
+    } 
+    else if (object.IsA<UE_UScriptStruct>()) 
+    {
       GenerateStruct(object.Cast<UE_UStruct>(), Structures, false);
-    } else if (object.IsA<UE_UEnum>()) {
+    }
+
+#if USE_UE_DUMPER
+    else if (object.IsA<UE_UEnum>()) 
+    {
       GenerateEnum(object.Cast<UE_UEnum>(), Enums);
     }
+#endif
   }
 }
 
+#if USE_UE_DUMPER
 bool UE_UPackage::Save(const fs::path &dir, bool spacing) {
   if (!(Classes.size() || Structures.size() || Enums.size())) {
     return false;
@@ -1357,6 +1545,7 @@ bool UE_UPackage::Save(const fs::path &dir, bool spacing) {
 
   return true;
 }
+#endif
 
 UE_UObject UE_UPackage::GetObject() const { return UE_UObject(Package->first); }
 

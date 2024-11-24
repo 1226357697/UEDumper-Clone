@@ -5,6 +5,8 @@
 #undef GetObject
 #endif
 
+#define USE_UE_DUMPER 1
+
 enum class STATUS {
   SUCCESS,
   FAILED,

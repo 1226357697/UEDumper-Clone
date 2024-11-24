@@ -3,6 +3,8 @@
 #include <filesystem>
 #undef GetObject
 
+#if USE_UE_DUMPER
+
 namespace fs = std::filesystem;
 
 // Wrapper for 'FILE*' that closes the file handle when it goes out of scope
@@ -11,7 +13,7 @@ private:
   FILE* file;
 
 public:
-  File(fs::path path, const char *mode) {
+  File(fs::path path, const char* mode) {
     fopen_s(&file, path.string().c_str(), mode);
   }
   ~File() {
@@ -20,8 +22,10 @@ public:
     }
   }
   operator bool() const { return file != nullptr; }
-  operator FILE *() { return file; }
+  operator FILE* () { return file; }
 };
+#endif // USE_UE_DUMPER
+
 
 // Wrapper for array unit in global names array
 class UE_FNameEntry {
@@ -108,6 +112,7 @@ public:
   std::string GetName() const;
   std::string GetFullName() const;
   std::string GetCppName() const;
+
   void* GetAddress() const { return object; }
   operator uint8*() const { return object; };
   operator bool() const { return object != nullptr; }
@@ -568,31 +573,50 @@ template <typename T> bool UE_UObject::IsA() const {
 }
 
 class UE_UPackage {
-private:
+public:
   struct Member {
+
+#if USE_UE_DUMPER
     std::string Type;
+#endif
+
     std::string Name;
     uint32 Offset = 0;
     uint32 Size = 0;
   };
   struct Function {
-    std::string FullName;
+
     std::string CppName;
+#if USE_UE_DUMPER
+    std::string FullName;
     std::string Params;
     std::string Flags;
+#endif
+
     uint64 Func = 0;
   };
   struct Struct {
-    std::string FullName;
+
     std::string CppName;
+
+#if USE_UE_DUMPER
+    std::string FullName;
+#endif
+
     uint32 Inherited = 0;
     uint32 Size = 0;
     std::vector<Member> Members;
     std::vector<Function> Functions;
+
+#if !USE_UE_DUMPER
+  std::vector<Struct> supers;
+#endif
   };
   struct Enum {
-    std::string FullName;
+
     std::string CppName;
+    std::string FullName;
+
     std::vector<std::string> Members;
   };
 
@@ -600,7 +624,11 @@ private:
   std::pair<uint8 *const, std::vector<UE_UObject>> *Package;
   std::vector<Struct> Classes;
   std::vector<Struct> Structures;
+
+#if USE_UE_DUMPER
   std::vector<Enum> Enums;
+#endif
+
 public:
   bool FindPointers = false;
 
@@ -611,13 +639,25 @@ private:
   static void FillPadding(UE_UStruct object, std::vector<Member>& members, uint32& offset, uint8& bitOffset, uint32 end, bool findPointers);
   static void GenerateFunction(UE_UFunction fn, Function* out);
   static void GenerateStruct(UE_UStruct object, std::vector<Struct>& arr, bool findPointers);
+
+#if USE_UE_DUMPER
   static void GenerateEnum(UE_UEnum object, std::vector<Enum>& arr);
+#endif
+
+#if USE_UE_DUMPER
   static void SaveStruct(std::vector<Struct> &arr, FILE *file);
   static void SaveStructSpacing(std::vector<Struct> &arr, FILE* file); // save struct with spacing to members applied
   static void SaveEnum(std::vector<Enum> &arr, FILE* file);
+#endif
+
 public:
   UE_UPackage(std::pair<uint8* const, std::vector<UE_UObject>>& package) : Package(&package){};
   void Process();
+  inline std::vector<Struct>& GetClasses() { return Classes; };
+  inline std::vector<Struct>& GetStructures() { return Classes; };
+#if USE_UE_DUMPER
   bool Save(const fs::path& dir, bool spacing);
+#endif // USE_UE_DUMPER
+
   UE_UObject GetObject() const;
 };
